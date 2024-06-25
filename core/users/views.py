@@ -1,10 +1,13 @@
 from django.shortcuts import render , redirect , HttpResponse
 from django.contrib.auth.models import User 
-from django.contrib.auth import authenticate , login
+from django.contrib.auth import authenticate , login , logout
 from django.contrib import messages
-
-
+from app.process import examine
+from django.contrib.auth.decorators import login_required
+from django.views.generic import TemplateView
+from django.contrib.auth.mixins import LoginRequiredMixin
 # Create your views here.
+
 
 def register(request):
     if request.method == 'POST':
@@ -30,6 +33,17 @@ def register(request):
         return redirect('/login/')
     return render(request , 'register.html')
 
+@login_required(login_url = '/login/')
+def show(request):
+    if request.method == 'POST':
+        data = request.POST
+        job = data.get('job_desc')
+        output = examine(job)  
+        keywords = dict(output)
+        return render(request , 'show.html', {'keywords':keywords}) 
+    
+    return render(request , 'show.html')
+
 
 def login_page(request):
     if request.method == 'POST':
@@ -49,8 +63,11 @@ def login_page(request):
         
         else:
             login(request , user)
-            return redirect('/show/')
+            return redirect(f'/user/show/{username}')
         
-    print("Hehe I am here")
     return render(request , "login.html")
+
+def logout_page(request):
+    logout(request)
+    return redirect('/login/')
     

@@ -40,6 +40,36 @@
 </head>
 <body>
     <div class="container">
+        <div class="container-fluid">
+            <ul class="nav navbar-nav navbar-right">
+                <li>
+                    {{ request.username }}
+                    {{ request.password }}
+                </li>
+                <li>
+                    {% if request.user.is_authenticated %}
+                        <button type="button" class="btn btn-danger">
+                            <a href="/login/" style="color: #ffffff;">
+                                Logout
+                            </a>
+                        </button>
+                    {% else %}
+                        <button type="button" class="btn btn-success">
+                            <a href="/show/" style="color: #000000;">
+                                Login
+                            </a>
+                        </button>
+                    {% endif %}
+                </li>
+            </ul>
+        </div>
+    </div>
+ 
+
+
+
+
+    <div class="container">
         <div class="card" style="width: 50pc;">
             <div class="card-body">
                 <form method="post" , enctype="multipart/form-data">

@@ -1,10 +1,14 @@
-from django.shortcuts import render
+from django.shortcuts import render , HttpResponse
 import spacy
 import re
 from collections import defaultdict
 import pandas as pd
 from .process import examine
+from django.contrib.auth.decorators import login_required
 
+
+
+@login_required(login_url='/login/')
 def show(request):
     if request.method == 'POST':
         data = request.POST
